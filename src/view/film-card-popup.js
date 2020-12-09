@@ -1,3 +1,4 @@
+import {createElement} from "../util";
 
 const fillGenresArea = (genres) => {
   let result = ``;
@@ -47,7 +48,7 @@ const fillCommentsArea = (comments) => {
   return result;
 };
 
-export const createFilmCardPopup = (film) => {
+const createFilmCardPopup = (film) => {
   const {poster,
     name,
     originalName,
@@ -178,3 +179,28 @@ export const createFilmCardPopup = (film) => {
     </form>
   </section>`;
 };
+
+export default class FilmPopup {
+  constructor(film) {
+    this._film = film;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmCardPopup(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
