@@ -17,6 +17,8 @@ import {render, RenderPosition} from "./util";
 const MOCKS_AMOUNT = 19;
 const FILMS_COUNT_PER_STEP = 5;
 
+// Как оказалось, я сделал вторую часть в предыдущем коммите, так что пушу пустой коммит :D
+
 const films = new Array(MOCKS_AMOUNT).fill().map(generateFilm);
 const userRank = generateUserRank();
 
