@@ -1,4 +1,4 @@
-import {getRandomInteger} from "../util";
+import {getRandomInteger} from "../util/common";
 
 export const generateUserRank = () => {
   const rank = getRandomInteger(0, 30);

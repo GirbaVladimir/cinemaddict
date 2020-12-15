@@ -1,4 +1,4 @@
-import {getRandomInteger} from "../util";
+import {getRandomInteger} from "../util/common";
 import {generateComments} from "./film-comments";
 
 const generateFilmName = () => {

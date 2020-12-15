@@ -1,4 +1,4 @@
-import {createElement} from "../util";
+import Abstract from "./abstract";
 
 const getWatchListAmount = (films) => {
   return films.filter((el) => el.isNeedToWatch).length;
@@ -30,26 +30,14 @@ const createMainMenu = (films) => {
   </ul>`;
 };
 
-export default class MainMenu {
+export default class MainMenu extends Abstract {
   constructor(filmsList) {
+    super();
     this._filmsList = filmsList;
-    this._element = null;
   }
 
   getTemplate() {
     return createMainMenu(this._filmsList);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 
