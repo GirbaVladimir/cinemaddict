@@ -49,7 +49,9 @@ const fillCommentsArea = (comments) => {
 };
 
 const createFilmCardPopup = (film) => {
-  const {poster,
+  const {
+    id,
+    poster,
     name,
     originalName,
     rating,
@@ -67,7 +69,7 @@ const createFilmCardPopup = (film) => {
     isWatched,
     isFavorite} = film;
 
-  return `<section class="film-details">
+  return `<section class="film-details" data-id="${id}">
     <form class="film-details__inner" action="" method="get">
       <div class="film-details__top-container">
         <div class="film-details__close">
@@ -185,10 +187,25 @@ export default class FilmPopup extends Abstract {
     super();
     this._film = film;
     this._clickHandler = this._clickHandler.bind(this);
+    this._needToWatchClickHandler = this._needToWatchClickHandler.bind(this);
+    this._watchedClickHandler = this._watchedClickHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
   }
 
   getTemplate() {
     return createFilmCardPopup(this._film);
+  }
+
+  _needToWatchClickHandler() {
+    this._callback.needToWatchClick();
+  }
+
+  _watchedClickHandler() {
+    this._callback.watchedClick();
+  }
+
+  _favoriteClickHandler() {
+    this._callback.favoriteClick();
   }
 
   _clickHandler(evt) {
@@ -200,6 +217,24 @@ export default class FilmPopup extends Abstract {
     this._callback.click = callback;
     this.getElement().querySelector(`.film-details__close-btn`)
       .addEventListener(`click`, this._clickHandler);
+  }
+
+  setNeedToWatchClickHandler(callback) {
+    this._callback.needToWatchClick = callback;
+    this.getElement().querySelector(`.film-details__control-label--watchlist`)
+      .addEventListener(`click`, this._needToWatchClickHandler);
+  }
+
+  setWatchedClickHandler(callback) {
+    this._callback.watchedClick = callback;
+    this.getElement().querySelector(`#watched`)
+      .addEventListener(`click`, this._watchedClickHandler);
+  }
+
+  setFavoriteClickHandler(callback) {
+    this._callback.favoriteClick = callback;
+    this.getElement().querySelector(`#favorite`)
+      .addEventListener(`click`, this._favoriteClickHandler);
   }
 }
 

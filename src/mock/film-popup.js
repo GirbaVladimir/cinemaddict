@@ -63,6 +63,7 @@ const generateAgeRating = () => {
 
 export const generatePopup = (film) => {
   const {
+    id,
     name,
     rating,
     releaseYear,
@@ -76,6 +77,7 @@ export const generatePopup = (film) => {
     isFavorite} = film;
 
   return {
+    id,
     poster,
     name,
     originalName: name, // пока так
