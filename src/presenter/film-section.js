@@ -5,6 +5,8 @@ import ShowMoreButton from "../view/show-more";
 import {remove, render, RenderPosition} from "../util/render";
 import FilmPresenter from "./film";
 import {updateItem} from "../util/common";
+import {SortType} from "../const";
+import {sortFilmByRating, sortFilmByReleaseYear} from "../util/sort";
 
 const FILMS_COUNT_PER_STEP = 5;
 
@@ -13,6 +15,7 @@ export default class FilmSectionPresenter {
     this._filmSectionContainer = filmSectionContainer;
     this._renderedFilmsCount = FILMS_COUNT_PER_STEP;
     this._filmPresenter = {};
+    this._currentSortType = SortType.DEFAULT;
 
     this._filmsSortComponent = new FilmsSort();
     this._filmsEmptySection = new FilmsEmptySection();
@@ -22,10 +25,12 @@ export default class FilmSectionPresenter {
     this._handleFilmChange = this._handleFilmChange.bind(this);
     this._handleCloseActivePopup = this._handleCloseActivePopup.bind(this);
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
+    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
 
   init(films) {
     this._films = films.slice();
+    this._defaultSortFilms = films.slice();
     this._renderFilmSection();
   }
 
@@ -54,8 +59,34 @@ export default class FilmSectionPresenter {
       .forEach((presenter) => presenter.deleteFilmPopup());
   }
 
+  _sortTasks(sortType) {
+    switch (sortType) {
+      case SortType.DATE:
+        this._films.sort(sortFilmByReleaseYear);
+        break;
+      case SortType.RATING:
+        this._films.sort(sortFilmByRating);
+        break;
+      default:
+        this._films = this._defaultSortFilms.slice();
+    }
+
+    this._currentSortType = sortType;
+  }
+
+  _handleSortTypeChange(sortType) {
+    if (this._currentSortType === sortType) {
+      return;
+    }
+
+    this._sortTasks(sortType);
+    this._clearFilmList();
+    this._renderFilmList();
+  }
+
   _renderSort() {
     render(this._filmSectionContainer, this._filmsSortComponent, RenderPosition.BEFOREEND);
+    this._filmsSortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
   _renderFilmEmptySection() {
